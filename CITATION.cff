@@ -19,7 +19,7 @@ keywords:
 repository-code: "https://github.com/1231hyper/no3in-archive"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.XXXXXXX"
+    value: "10.5281/zenodo.21997174"
 related-resources:
   - type: database
     title: "No-Three-in-Line Problem (source database)"

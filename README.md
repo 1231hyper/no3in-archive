@@ -114,7 +114,7 @@ seed (20260818, 10⁶ samples); its parameters are written into the log.
   SHA-256 `6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0`.
 - Paper: *Cycle structure and the Hamming geometry of no-three-in-line
   solutions* (in preparation; see `CITATION.cff`).
-- Archive: Zenodo, DOI 10.5281/zenodo.XXXXXXX (to be assigned at release).
+- Archive: Zenodo, https://doi.org/10.5281/zenodo.21997174.
 
 ## Licence
 
