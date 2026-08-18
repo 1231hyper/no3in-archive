@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software and data archive, please cite it as below and the companion paper."
+title: "no3in-archive: reproducible data and verification for the no-three-in-line census"
+# NOTE: replace the author with the paper author's full name before release.
+authors:
+  - family-names: "hyper"
+    given-names: "1231"
+    email: "2792874459@qq.com"
+    orcid: ""
+date-released: "2026-08-18"
+version: "1.0.0"
+license: "MIT"
+keywords:
+  - no-three-in-line
+  - combinatorics
+  - census
+  - reproducibility
+  - verification
+repository-code: "https://github.com/1231hyper/no3in-archive"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.XXXXXXX"
+related-resources:
+  - type: database
+    title: "No-Three-in-Line Problem (source database)"
+    url: "https://wwwhomes.uni-bielefeld.de/achim/no3in/download/"
+    note: "Revision 2026-08-11; see data/snapshot_manifest.txt for the exact pin."

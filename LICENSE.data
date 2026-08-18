@@ -1,0 +1,11 @@
+# Derived tables — Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+The files under `data/derived_tables/` are factual tables computed from the
+pinned snapshot of Flammenkamp's no-three-in-line database. They are made
+available under the Creative Commons Attribution 4.0 International license:
+
+https://creativecommons.org/licenses/by/4.0/
+
+In short: you may share and adapt the tables with attribution to the paper
+above and to the underlying database (see `data/snapshot_manifest.txt`).
+The full legal text of CC BY 4.0 is available at the URL above.

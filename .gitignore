@@ -1,0 +1,7 @@
+# raw snapshot (third-party data; not redistributed)
+data/raw/
+
+# python
+__pycache__/
+*.pyc
+.venv/

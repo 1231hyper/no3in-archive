@@ -1,0 +1,4 @@
+# The entire pipeline uses only the Python 3.9+ standard library.
+# There are no third-party dependencies to install.
+#
+#   python --version   # >= 3.9 required

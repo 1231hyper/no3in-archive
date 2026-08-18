@@ -1,0 +1,27 @@
+{
+  "title": "no3in-archive: reproducible data and verification for the no-three-in-line census",
+  "description": "Code and data archive accompanying the paper 'Cycle structure and the Hamming geometry of no-three-in-line solutions'. Pins the exact snapshot of Flammenkamp's no-three-in-line database (revision 2026-08-11, SHA-256 6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0), recomputes every [DB-Exh] claim with two independent code paths, and provides derived tables (CSV/JSON), a one-command reproduction script, and full execution logs. The raw database itself is not redistributed (no explicit licence); the download recipe and digest pin are included instead. Python 3.9+, standard library only.",
+  "upload_type": "software",
+  "publication_type": "preprint",
+  "creators": [
+    {
+      "name": "1231hyper",
+      "affiliation": ""
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "no-three-in-line",
+    "combinatorics",
+    "census",
+    "verification",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "cites",
+      "identifier": "https://wwwhomes.uni-bielefeld.de/achim/no3in/download/",
+      "resource_type": "dataset"
+    }
+  ]
+}

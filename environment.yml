@@ -1,0 +1,6 @@
+name: no3in-archive
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+# no third-party packages: the pipeline is standard-library only

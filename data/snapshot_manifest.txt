@@ -1,0 +1,42 @@
+# Snapshot pin — Flammenkamp's no-three-in-line database
+# =======================================================
+# This manifest identifies the EXACT byte sequence used for every derived
+# table and verification result in this repository.
+
+file:            all_known_solutions.txt
+source_url:      https://wwwhomes.uni-bielefeld.de/achim/no3in/download/all_known_solutions
+source_page:     https://wwwhomes.uni-bielefeld.de/achim/no3in/
+revision_date:   2026-08-11        # page states "As of 2026-08-11 there are 430991 configurations"
+downloaded_on:   2026-08-15
+size_bytes:      23832810
+sha256:          6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0
+lines:           430991
+n_range:         2..76
+content:         all known no-three-in-line solutions, one per line,
+                 one class per orbit of the square D4 symmetry group
+                 (see src/parser/ for the format decode)
+
+# Format specification (from the source page; see src/parser/ for the decode):
+#   line := symmetry-marker + body
+#   each of the n rows contributes the two occupied columns as two
+#   characters, top row first, left column first: n = len(body)//2,
+#   row = position//2, col = code[character]
+#   90-character column alphabet:
+#     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%&@?!()[]<>{}=*+|-/~^_:;,. "
+#   symmetry markers: '.'=iden, ':'=rot2, '/'=dia1, '-'=ort1, 'o'=rot4,
+#   'c'=rct4, 'x'=dia2, '+'=ort2, '*'=full
+
+# Redistribution status
+# ---------------------
+# The source page states that its algorithms are downloadable for free but
+# gives NO explicit licence for the data file itself. Therefore the raw
+# snapshot is NOT redistributed in this repository. Instead we archive:
+#   - this pin (URL, revision date, size, SHA-256),
+#   - the download recipe (data/download_snapshot.py),
+#   - every derived table computed from the pinned bytes (data/derived_tables/).
+# The derived tables are facts about the pinned snapshot and are released
+# under CC BY 4.0 (see LICENSE.data).
+#
+# To obtain the raw file yourself:
+#   python data/download_snapshot.py --out data/raw/all_known_solutions.txt
+# (the script verifies the SHA-256 digest above).

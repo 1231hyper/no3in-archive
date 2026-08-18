@@ -1,0 +1,22 @@
+PASS  data/derived_tables/asym_21_56.csv
+PASS  data/derived_tables/census_n2_20.csv
+PASS  data/derived_tables/claims_summary.csv
+PASS  data/derived_tables/conditioning_joint_n5_7.csv
+PASS  data/derived_tables/conditioning_mc_n8.csv
+PASS  data/derived_tables/conditioning_summary.json
+PASS  data/derived_tables/corner_barrier.csv
+PASS  data/derived_tables/corner_small_n.csv
+PASS  data/derived_tables/corpus_stats.json
+PASS  data/derived_tables/corpus_windows.csv
+PASS  data/derived_tables/l_values.csv
+PASS  data/derived_tables/n20_marker_census.csv
+PASS  data/derived_tables/n20_sample.csv
+PASS  data/derived_tables/n3_series.csv
+PASS  data/derived_tables/nearneighbor_n8_17.csv
+PASS  data/derived_tables/poisson_fits.json
+PASS  data/derived_tables/scan_min_spectra.csv
+PASS  data/derived_tables/snapshot_stats.json
+PASS  data/derived_tables/windows_n4_13.csv
+SKIP  missing (third-party snapshot, run python data/download_snapshot.py)  data/raw/all_known_solutions.txt
+PASS  results/verifier_report.json
+20/21 files OK (1 skipped)
