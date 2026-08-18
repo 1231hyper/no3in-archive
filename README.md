@@ -40,10 +40,11 @@ cat results/execution_logs/*.log      # full logs of the run
 python scripts/verify_hashes.py --check   # re-check hashes of all artifacts
 ```
 
-`reproduce_all.sh` runs in roughly 1.5–2 h on a single core
+`reproduce_all.sh` runs in roughly 2.5 h on a single core
 (Python 3.9+, standard library only). The time is dominated by the
-independent verifier's near-neighbor phase (~1 h; everything else is a
-few minutes, the conditioning enumeration ~20 min). Heavy steps can be
+independent verifier's near-neighbor phase (~1.5 h; everything else is a
+few minutes, the conditioning enumeration ~30 min, measured on an
+i7-class laptop with the pinned snapshot). Heavy steps can be
 skipped with `--skip-conditioning` (exact n = 7 enumeration + n = 8
 Monte Carlo) and `--skip-verifier` (the full verification run).
 
