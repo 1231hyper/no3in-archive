@@ -6,7 +6,7 @@ authors:
     given-names: "Lutian"
     email: "231300082@smail.nju.edu.cn"
     affiliation: "School of Artificial Intelligence, Nanjing University"
-    orcid: "0009-0005-0370-1712"
+    orcid: "https://orcid.org/0009-0005-0370-1712"
 date-released: "2026-08-18"
 version: "1.0.1"
 license: "MIT"
