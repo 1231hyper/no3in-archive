@@ -17,7 +17,7 @@
 #   6. extract report tables
 #   7. verify hashes vs manifest
 #
-# Total wall time: roughly 1.5-2 h on a single core.  Logs are written
+# Total wall time: roughly 2.5 h on a single core.  Logs are written
 # to results/execution_logs/.
 #
 # Optional flags:

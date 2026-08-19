@@ -701,7 +701,8 @@ def main():
         lf.write(msg + "\n")
         lf.flush()
 
-    both("independent verifier v%s  snapshot %s" % (VERSION, args.snapshot))
+    both("independent verifier v%s  snapshot %s"
+         % (VERSION, os.path.basename(args.snapshot)))
     t_start = time.time()
 
     # ---------------------------------------------------------- phase 1
@@ -784,12 +785,13 @@ def main():
         if has_collinear_triple(pts):
             triple_fail.append((n, tag))
     both("  witness triple checks: %d failures" % len(triple_fail))
-    both("  phase 1 done in %.1fs" % (time.time() - t1))
+    both("  phase 1 done")
 
     res = {"verifier": {"name": "no3in independent verifier",
                         "version": VERSION},
-           "snapshot": {"path": args.snapshot, "bytes": size,
-                        "sha256": digest, "pin": PIN_SHA256,
+           "snapshot": {"path": os.path.basename(args.snapshot),
+                        "bytes": size, "sha256": digest,
+                        "pin": PIN_SHA256,
                         "pin_matches": (size == PIN_SIZE and
                                         digest == PIN_SHA256)},
            "claims": [], "tables": {}}
@@ -998,7 +1000,7 @@ def main():
         corpus_stats["sec_mean_76"] = sec_num_76 / sec_den_76
         corpus_stats["sec_mean_all"] = sec_num / sec_den
 
-    both("  phase 2 done in %.1fs" % (time.time() - t1))
+    both("  phase 2 done")
 
     # snapshot integrity table (triple coverage: n <= 20, corpus,
     # scan witnesses)
@@ -1073,7 +1075,7 @@ def main():
             row["undirected_edges"] = len(flip_edges)
             row["flip_spectra_ok"] = spec_ok
             windows[n] = row
-        both("  phase 3 done in %.1fs" % (time.time() - t1))
+        both("  phase 3 done")
     res["tables"]["windows"] = windows
 
     # ---------------------------------------------------------- phase 4
@@ -1093,7 +1095,7 @@ def main():
                        "density_pct": density,
                        "largest_comp": comps[0] if comps else 0,
                        "components": comps}
-        both("  phase 4 done in %.1fs" % (time.time() - t1))
+        both("  phase 4 done")
     res["tables"]["near"] = near
 
     # ------------------------------------------------------- phase 4b
@@ -1116,7 +1118,7 @@ def main():
         corpus_stats["near_pairs"] = sum(pairs_by_n.values())
         corpus_stats["near_pairs_by_n"] = pairs_by_n
         corpus_stats["near_min"] = min_by_n
-        both("  phase 4b done in %.1fs" % (time.time() - t1))
+        both("  phase 4b done")
 
     # ---------------------------------------------------------- phase 5
     # n = 20 window sample (Move 1)
@@ -1140,7 +1142,7 @@ def main():
                     valid_flips += 1
         sample = {"classes": len(idx), "windows": total_windows,
                   "valid_flips": valid_flips, "seed": args.seed}
-        both("  phase 5 done in %.1fs" % (time.time() - t1))
+        both("  phase 5 done")
     res["tables"]["n20_sample"] = sample
 
     # ---------------------------------------------------------- phase 6
@@ -1158,7 +1160,7 @@ def main():
                 flipped = move1_flip(pts, R, cmask)
                 if not has_collinear_triple(flipped):
                     row["valid_flips"] += 1
-        both("  phase 6 done in %.1fs" % (time.time() - t1))
+        both("  phase 6 done")
     res["tables"]["corpus_windows"] = cwin
 
     # ------------------------------------------------------ tables -----
@@ -1215,7 +1217,7 @@ def main():
             "detail": detail if detail else "",
         })
 
-    with open(args.out, "w", encoding="utf-8") as f:
+    with open(args.out, "w", newline="\n", encoding="utf-8") as f:
         json.dump(res, f, indent=1, sort_keys=True, default=str)
     npass = sum(1 for c in res["claims"] if c["status"] == "PASS")
     nfail = sum(1 for c in res["claims"] if c["status"] == "FAIL")
@@ -1226,7 +1228,6 @@ def main():
     both("")
     both("verdict: %d PASS, %d FAIL, %d SKIP" % (npass, nfail, nskip))
     both("report: %s" % args.out)
-    both("total %.1fs" % (time.time() - t_start))
     lf.close()
     return 1 if nfail else 0
 

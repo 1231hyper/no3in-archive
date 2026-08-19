@@ -1,4 +1,12 @@
-# The entire pipeline uses only the Python 3.9+ standard library.
-# There are no third-party dependencies to install.
+# The archive's main pipeline (parser, census, independent verifier,
+# conditioning analysis) uses the Python standard library only: there is
+# nothing to install for reproduce_all.sh.
 #
-#   python --version   # >= 3.9 required
+# Optional — the solver observations of paper Section 8
+# (solver_study/n71_warm.py, n73_warm.py, n75_warm.py, n71_deadend.py)
+# additionally require Google OR-Tools (CP-SAT):
+#
+#   pip install ortools
+#
+# Everything else in solver_study/ (repair, selftest, line tables) is
+# standard library only.

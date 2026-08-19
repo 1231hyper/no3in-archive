@@ -1,10 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software and data archive, please cite it as below and the companion paper."
 title: "no3in-archive: reproducible data and verification for the no-three-in-line census"
-# NOTE: replace the author with the paper author's full name before release.
 authors:
-  - family-names: "hyper"
-    given-names: "1231"
+  - family-names: "Wang"
+    given-names: "Lutian"
     email: "2792874459@qq.com"
     orcid: ""
 date-released: "2026-08-18"

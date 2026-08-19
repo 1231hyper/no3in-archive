@@ -281,10 +281,10 @@ def main():
             "no-triple mean X mismatch at n=%d" % n
         both("  n=%d: matrices=%d ray-clean=%d T=0=%d  mean X=%.4f "
              "(formula %.4f)  no-triple mean X=%.4f (lit %.2f)  "
-             "E[T]=%.3f  Corr(T,X)=%.3f  (%.1fs)" %
+             "E[T]=%.3f  Corr(T,X)=%.3f" %
              (n, s["matrices"], s["ray_clean"], s["t0_count"],
               s["mean_x"], s["e_pair_formula"], s["t0_mean_x"],
-              LIT_T0_MEAN[n], s["mean_t"], s["corr_tx"], time.time() - tA))
+              LIT_T0_MEAN[n], s["mean_t"], s["corr_tx"]))
 
     # ---- n = 8 Monte Carlo ----
     n = 8
@@ -314,40 +314,39 @@ def main():
         t //= 2
         byt[t].append(x)
         if (k + 1) % 200000 == 0:
-            both("    ... %d sampled (%.1fs)" % (k + 1, time.time() - t0))
+            both("    ... %d sampled" % (k + 1))
     s8 = summarize(8, byt, [], [])
     s8["seed"] = SEED
     s8["mc_samples"] = args.mc_n8
     results[8] = s8
-    both("  n=8 MC: mean X=%.4f (formula %.4f) E[T]=%.3f Corr(T,X)=%.3f "
-         "(%.1fs)" % (s8["mean_x"], s8["e_pair_formula"], s8["mean_t"],
-                      s8["corr_tx"], time.time() - tA))
+    both("  n=8 MC: mean X=%.4f (formula %.4f) E[T]=%.3f Corr(T,X)=%.3f"
+         % (s8["mean_x"], s8["e_pair_formula"], s8["mean_t"],
+            s8["corr_tx"]))
 
     # ---- write outputs ----
     with open(os.path.join(args.out, "conditioning_joint_n5_7.csv"),
               "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "t", "count", "mean_x", "var_x"])
         for n in (5, 6, 7):
             for r in results[n]["per_t"]:
                 w.writerow([n, r["t"], r["count"], r["mean_x"], r["var_x"]])
     with open(os.path.join(args.out, "conditioning_mc_n8.csv"),
               "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "seed", "t", "count", "mean_x", "var_x"])
         for r in results[8]["per_t"]:
             w.writerow([8, SEED, r["t"], r["count"], r["mean_x"],
                         r["var_x"]])
     out = {str(k): {kk: vv for kk, vv in v.items() if kk != "per_t"}
            for k, v in results.items()}
-    out["_meta"] = {"seed": SEED, "mc_n8_samples": args.mc_n8,
-                    "runtime_s": round(time.time() - t0, 1)}
+    out["_meta"] = {"seed": SEED, "mc_n8_samples": args.mc_n8}
     with open(os.path.join(args.out, "conditioning_summary.json"), "w",
-              encoding="utf-8") as f:
+              newline="\n", encoding="utf-8") as f:
         json.dump(out, f, indent=1, sort_keys=True, default=str)
     both("  wrote conditioning_joint_n5_7.csv, conditioning_mc_n8.csv, "
          "conditioning_summary.json")
-    both("  done in %.1fs" % (time.time() - t0))
+    both("  done")
     lf.close()
     return 0
 

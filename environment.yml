@@ -1,6 +1,16 @@
+# Conda environment for the archive.
+#
+# The main pipeline (parser, census, independent verifier, conditioning
+# analysis) is Python standard library only: conda env create with just
+# python is sufficient for reproduce_all.sh.
+#
+# The solver observations of paper Section 8 (solver_study/) additionally
+# need OR-Tools (CP-SAT).  If you want those too:
+#
+#   conda install -c conda-forge ortools
+#
 name: no3in-archive
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
-# no third-party packages: the pipeline is standard-library only
+  - python>=3.9

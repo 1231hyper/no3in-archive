@@ -977,7 +977,7 @@
  ],
  "snapshot": {
   "bytes": 23832810,
-  "path": "C:/Users/lenovo/no3in/.webtmp/all_known_solutions.txt",
+  "path": "all_known_solutions.txt",
   "pin": "6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0",
   "pin_matches": true,
   "sha256": "6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0"
@@ -1817,11 +1817,11 @@
   "corpus_windows": {
    "57": {
     "valid_flips": 0,
-    "windows": 1078
+    "windows": 670
    },
    "58": {
     "valid_flips": 0,
-    "windows": 54
+    "windows": 36
    },
    "59": {
     "valid_flips": 0,
@@ -1829,7 +1829,7 @@
    },
    "60": {
     "valid_flips": 0,
-    "windows": 161
+    "windows": 113
    },
    "61": {
     "valid_flips": 0,
@@ -1845,7 +1845,7 @@
    },
    "64": {
     "valid_flips": 0,
-    "windows": 85
+    "windows": 43
    },
    "65": {
     "valid_flips": 0,
@@ -1853,7 +1853,7 @@
    },
    "66": {
     "valid_flips": 0,
-    "windows": 18
+    "windows": 12
    },
    "67": {
     "valid_flips": 0,
@@ -1865,11 +1865,11 @@
    },
    "69": {
     "valid_flips": 0,
-    "windows": 30
+    "windows": 12
    },
    "70": {
     "valid_flips": 0,
-    "windows": 74
+    "windows": 26
    },
    "72": {
     "valid_flips": 0,
@@ -1881,7 +1881,7 @@
    },
    "76": {
     "valid_flips": 0,
-    "windows": 8
+    "windows": 2
    }
   },
   "ltable": {

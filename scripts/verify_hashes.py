@@ -95,7 +95,7 @@ def main():
                 lines.append("%s  %s" % (sha256_file(path), rel))
             else:
                 print("  (missing, skipped) %s" % rel)
-        with open(manifest, "w", encoding="utf-8") as f:
+        with open(manifest, "w", encoding="utf-8", newline="\n") as f:
             f.write("\n".join(lines) + "\n")
         print("wrote %s (%d entries)" % (manifest, len(lines) - 2))
         return 0

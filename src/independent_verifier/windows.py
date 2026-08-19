@@ -211,7 +211,17 @@ def find_windows_pairs(pts, n):
                             for r3 in rows_by_pair[kc2]:
                                 for r4 in rows_by_pair[kd2]:
                                     windows.append(((r1, r2, r3, r4), cmask))
-    return windows
+    # Each c4 window is discovered once per starting edge of the
+    # 4-cycle (four starts, distinct row orders), so deduplicate on the
+    # canonical key (sorted rows, column mask).
+    seen = set()
+    out = []
+    for (R, cmask) in windows:
+        key = (tuple(sorted(R)), cmask)
+        if key not in seen:
+            seen.add(key)
+            out.append((R, cmask))
+    return out
 
 
 # ------------------------------------------------------------ Move 1 ----

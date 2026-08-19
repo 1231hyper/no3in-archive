@@ -26,7 +26,6 @@ import json
 import math
 import os
 import sys
-import time
 
 from src.parser.decode import decode_line
 from src.parser.geom import stabilizer_type, cycle_spectrum
@@ -97,7 +96,6 @@ def main():
         lf.write(msg + "\n")
         lf.flush()
 
-    t0 = time.time()
     both("poisson analysis  snapshot %s" % args.snapshot)
 
     # ---- series from the snapshot ----
@@ -171,10 +169,10 @@ def main():
                                     for i in range(3)],
     }
     with open(os.path.join(args.out, "poisson_fits.json"), "w",
-              encoding="utf-8") as f:
+              newline="\n", encoding="utf-8") as f:
         json.dump(out, f, indent=1, sort_keys=True, default=str)
     both("  wrote poisson_fits.json")
-    both("  done in %.1fs" % (time.time() - t0))
+    both("  done")
     lf.close()
     return 0
 

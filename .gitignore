@@ -5,3 +5,9 @@ data/raw/
 __pycache__/
 *.pyc
 .venv/
+
+# solver line-table pickle caches (generated next to the scripts)
+*.pkl
+
+# per-run execution logs (runtime artifacts; not versioned)
+results/execution_logs/

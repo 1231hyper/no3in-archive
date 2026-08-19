@@ -10,7 +10,6 @@ import hashlib
 import json
 import os
 import sys
-import time
 from collections import Counter, defaultdict
 
 from src.parser.decode import decode_line
@@ -37,7 +36,6 @@ def main():
         lf.write(msg + "\n")
         lf.flush()
 
-    t0 = time.time()
     both("census tables writer  snapshot %s" % args.snapshot)
 
     sha = hashlib.sha256()
@@ -148,7 +146,7 @@ def main():
     # ---------------- census_n2_20.csv + n3_series.csv + l_values.csv ----
     with open(os.path.join(args.out, "census_n2_20.csv"), "w",
               newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         header = (["n", "classes", "labeled", "r180_labeled",
                    "any_labeled", "trivial_stab", "center_r180",
                    "center_nonr180"] +
@@ -169,14 +167,14 @@ def main():
 
     with open(os.path.join(args.out, "n3_series.csv"), "w", newline="",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "n3_labeled"])
         for n in sorted(census):
             w.writerow([n, census[n]["n3_labeled"]])
 
     with open(os.path.join(args.out, "l_values.csv"), "w", newline="",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "L", "min_spectrum", "minimizer_classes",
                     "minimizer_labeled"])
         for n in sorted(census):
@@ -190,7 +188,7 @@ def main():
     if 20 in census:
         with open(os.path.join(args.out, "n20_marker_census.csv"), "w",
                   newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
+            w = csv.writer(f, lineterminator="\n")
             w.writerow(["marker", "classes", "labeled"])
             row = census[20]
             for m in MARKERS:
@@ -201,7 +199,7 @@ def main():
     # ---------------- corner_barrier.csv + corner_small_n.csv -----------
     with open(os.path.join(args.out, "corner_barrier.csv"), "w", newline="",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "blocked_pct", "b4_share", "open_labeled",
                     "sec_mean", "sec_max", "bhist"])
         for n in sorted(census):
@@ -220,7 +218,7 @@ def main():
 
     with open(os.path.join(args.out, "corner_small_n.csv"), "w", newline="",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "open_pct"])
         for n in sorted(census):
             if n > 7:
@@ -232,7 +230,7 @@ def main():
     # ---------------- scan_min_spectra.csv ------------------------------
     with open(os.path.join(args.out, "scan_min_spectra.csv"), "w",
               newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "classes", "labeled", "minL", "min_spectrum"])
         for n in sorted(scan):
             agg = scan[n]
@@ -242,7 +240,7 @@ def main():
     # ---------------- asym_21_56.csv ------------------------------------
     with open(os.path.join(args.out, "asym_21_56.csv"), "w", newline="",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["n", "iden_classes"])
         for n in sorted(scan):
             w.writerow([n, scan[n]["iden"]])
@@ -308,7 +306,7 @@ def main():
     _write_json(args.out, "corpus_stats.json", corpus_stats)
 
     both("  tables written to %s" % args.out)
-    both("  done in %.1fs" % (time.time() - t0))
+    both("  done")
     lf.close()
 
 
@@ -319,7 +317,8 @@ def _orbit_of(marker):
 
 
 def _write_json(out_dir, name, obj):
-    with open(os.path.join(out_dir, name), "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, name), "w", newline="\n",
+              encoding="utf-8") as f:
         json.dump(obj, f, indent=1, sort_keys=True, default=str)
 
 

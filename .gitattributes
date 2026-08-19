@@ -1,0 +1,13 @@
+# Normalize line endings: everything is stored as LF in the repository
+# and checked out as LF on all platforms (Windows included), so that
+# byte-for-byte hashes in results/expected_hashes.txt are reproducible
+# across machines.
+* text=auto eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.cff text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf

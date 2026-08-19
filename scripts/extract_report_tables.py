@@ -51,7 +51,7 @@ def main():
     def wcsv(name, header, rows):
         path = os.path.join(args.out, name)
         with open(path, "w", newline="", encoding="utf-8") as f:
-            wr = csv.writer(f)
+            wr = csv.writer(f, lineterminator="\n")
             wr.writerow(header)
             wr.writerows(rows)
         print("  wrote %s (%d rows)" % (path, len(rows)))

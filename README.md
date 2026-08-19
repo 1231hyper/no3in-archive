@@ -62,13 +62,16 @@ src/
                                  [DB-Exh] claim -> results/verifier_report.json
     analysis/                    conditioning enumeration (n = 5..7), n = 8
                                  Monte Carlo (fixed seed), Poisson fits
+solver_study/
+    README.md                    paper Section 8 materials (CP-SAT
+                                 observations, k <= 3 repair)
 scripts/
     reproduce_all.sh             one-command reproduction
     verify_hashes.py             hash check of all artifacts
 results/
     expected_hashes.txt          pinned SHA-256 of every artifact
     verifier_report.json         per-claim verdicts (generated)
-    execution_logs/              full logs of clean-environment runs
+    execution_logs/              per-run logs (generated, not versioned)
 ```
 
 ## What is verified (claim list)
@@ -100,10 +103,15 @@ specification and re-derives, without importing any `src/parser` module:
 
 ## Software environment
 
-Python 3.9+, **standard library only** — no third-party dependencies
-(`requirements.txt` documents this; an `environment.yml` is provided for
-conda users). The Monte Carlo sampler uses Python's `random` with a fixed
-seed (20260818, 10⁶ samples); its parameters are written into the log.
+Python 3.9+, **standard library only** for the main pipeline — no
+third-party dependencies (`requirements.txt` documents this; an
+`environment.yml` is provided for conda users). The Monte Carlo sampler
+uses Python's `random` with a fixed seed (20260818, 10⁶ samples); its
+parameters are written into the log.
+
+The solver observations of paper Section 8 (`solver_study/`) are the one
+exception: the four CP-SAT scripts need Google OR-Tools (optional;
+`pip install ortools`), everything else there is standard library.
 
 ## Source database and citation
 
