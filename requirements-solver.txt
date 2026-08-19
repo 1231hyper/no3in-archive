@@ -1,0 +1,3 @@
+# Optional, pinned environment for the exploratory CP-SAT programs in solver_study/.
+# The archive's main census and repair pipeline remains standard-library only.
+ortools==9.15.6755

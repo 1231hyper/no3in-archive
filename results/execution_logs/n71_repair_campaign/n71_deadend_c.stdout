@@ -1,0 +1,11 @@
+[n71_repair] dead-end loaded: m=71 size=140 cap=0.0s
+  partial no3_valid=None
+  row counts: [2, 2, 2, 2, 2] ... (deficit rows: [70])
+  col counts: [2, 2, 2, 2, 2] ... (deficit cols: [70])
+  k=0: 2 matching iterations, 0 admissible fill attempts, completed=True
+  k=1: 840 matching iterations, 560 admissible fill attempts, completed=True
+  k=2: 233520 matching iterations, 193480 admissible fill attempts, completed=True
+  k=3: 53709600 matching iterations, 47724320 admissible fill attempts, completed=True
+  no3_valid gate calls: 0
+  run report: results/execution_logs/n71_repair_campaign/n71_deadend_c_report.json
+[n71_repair] EXHAUSTED k<=3 in 58s: no completion; this seed has deletion distance >=4 from any 2N-point solution (if one exists)

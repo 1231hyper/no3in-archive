@@ -4,10 +4,10 @@
 # analysis) is Python standard library only: conda env create with just
 # python is sufficient for reproduce_all.sh.
 #
-# The solver observations of paper Section 8 (solver_study/) additionally
+# The exploratory CP-SAT programs retained with paper Section 8 additionally
 # need OR-Tools (CP-SAT).  If you want those too:
 #
-#   conda install -c conda-forge ortools
+#   python -m pip install -r requirements-solver.txt
 #
 name: no3in-archive
 channels:

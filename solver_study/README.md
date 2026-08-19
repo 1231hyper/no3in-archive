@@ -1,14 +1,16 @@
-# solver_study/ — CP-SAT observations and k ≤ 3 repair at N = 71, 73, 75
+# solver_study/ — frontier checks and N = 71 repair
 
 Materials for **paper Section 8** ("Embedded-solution repair barriers at
-N = 71, 73, 75"), the `[Solver]` claim. The claims of that section are
-*solver observations*, not certified theorems: the archive's independent
-verifier does not cover them. Everything here is the actual code and data
-used for the section, made self-contained (no absolute paths, no
+N = 71, 73, 75").  The revised manuscript limits its N = 73 and N = 75
+claims to the direct frontier-secant check; it makes no archived long-run
+CP-SAT-stall or repair-exhaustion claim at those sizes.  The N = 71 local
+repair result is supported by the six machine-readable exhaustive reports
+described below.  Everything here is self-contained (no absolute paths, no
 external files).
 
 **Dependencies.** The three `*_warm.py` scripts and `n71_deadend.py`
-require Google OR-Tools (`pip install ortools`). The repair machinery,
+require the pinned Google OR-Tools environment
+(`pip install -r ../requirements-solver.txt`). The repair machinery,
 the selftest, `fast_lines.py` and `no3in.py` use the standard library
 only.
 
@@ -28,8 +30,8 @@ only.
    rays to be exactly 2-point lines, so the counts are genuine secants
    (no 3-point rays).
 
-2. **CP-SAT maximization warm-started from an embedded 2(N−1)-solution
-   stalls at 2N−2 points.** Reproduce with, e.g.:
+2. **Exploratory CP-SAT scripts.** The archive retains the warm-start
+   programs so that future solver experiments can be run with, e.g.:
 
    ```
    python n71_warm.py --time 600 --workers 4          # N = 71, from solutions_n70_rot4.json
@@ -37,32 +39,50 @@ only.
    python n75_warm.py --time 600 --workers 4          # N = 75, from solutions_n74_rot4.json
    ```
 
-   Each embeds a corpus 2(N−1)-solution into [N]² (rows/columns 0..N−2
+   Each program embeds a corpus 2(N−1)-solution into [N]² (rows/columns 0..N−2
    full), hands it to CP-SAT as hints, and maximizes the point count with
    a time budget; it saves the best-so-far partial as
    `n71_deadend_b.json` / `n73_deadend.json` / `n75_deadend.json`. With
    the `--sol`/`--idx` flags you can pick a different seed configuration
-   (15 for N = 71). `n71_deadend.py` is the unrestricted cold run (no
-   warm start) that stops at the 2N−1 = 141 dead-end. The paper's runs
-   used 2–8 h budgets; short budgets show the stall, not the fix.
+   (15 for N = 71). `n71_deadend.py` is an unrestricted cold-run program.
+   Solver output depends on the time budget, worker count, random seed,
+   software version, and hardware.  The revised manuscript does not cite
+   an N = 73 or N = 75 long-run outcome; a future claim would require the
+   exact command, stdout, generated output, and environment to be archived.
 
 3. **Exhaustive k ≤ 3 repair finds zero completions (deletion distance
    ≥ 4; Hamming distance ≥ 10 to any solution that might exist).** The
-   repair machinery, with pruned and naive variants, a synthetic-partial
-   selftest, and fresh-process verification:
+   repair machinery has pruned and naive variants, a synthetic-partial
+   selftest, fresh-process verification, real wall-clock deadlines, and
+   machine-readable status/counter reports:
 
    ```
    python n71_repair.py --selftest          # n = 12, 14, 16 synthetic partials
    python n71_repair.py --deadend n71_deadend_b.json --cap 120
+   python run_n71_repairs.py --cap 0 --candidate-cap 0  # all six, exhaustive
    ```
 
-   The paper's exhaustive count (~47.7 M candidates over all six seeds)
-   came from a long campaign run; the archived script reproduces the
-   machinery with a wall-clock cap and a self-test that pins the
-   pruned/naive agreement (both succeed on the synthetic partials; a
-   `MISMATCH` line means the pruning is broken). A `k<=3 REPAIR FAILED`
-   line for an archived dead-end is the expected outcome — it is the
-   content of the claim.
+   The `--cap` value is seconds per run and is enforced.  `--cap 0`
+   disables the deadline.  The optional `--candidate-cap` is also enforced;
+   its default 0 disables it.  Each child run reports exactly one of
+   `FOUND`, `EXHAUSTED`, `TIMED_OUT`, `CANDIDATE_CAP`, or `INVALID_INPUT`.
+   Only `EXHAUSTED` establishes a negative result.  A `TIMED_OUT` or
+   `CANDIDATE_CAP` run exits nonzero, prints `NO EXHAUSTIVE CONCLUSION`, and
+   must never be cited for the deletion-distance claim.
+
+   The six-seed driver writes stdout and JSON reports under
+   `results/execution_logs/n71_repair_campaign/` and an aggregate summary at
+   `results/execution_logs/n71_repair_campaign_summary.json`.  The aggregate
+   is `EXHAUSTED` only if all six children are exhaustive; any missing,
+   capped, timed-out, or failed child makes it `INCOMPLETE`.  The complete
+   campaign summary, counters, input hashes, and stdout logs used for the
+   manuscript are archived with release v1.0.1.
+
+   **Archived v1.0.1 result.** All six child reports and the aggregate report
+   have status `EXHAUSTED`.  The aggregate counters are 323,663,772 matching
+   iterations and 287,514,384 admissible fill attempts.  No attempt survives
+   the complete local filters to the redundant final exact gate, and no
+   completion is found.
 
 ## Files
 
@@ -73,6 +93,7 @@ Scripts:
 | `n71_warm.py` / `n73_warm.py` / `n75_warm.py` | CP-SAT maximize warm-started from an embedded 2(N−1)-solution (OR-Tools) |
 | `n71_deadend.py` | unrestricted cold CP-SAT run stopping at the 2N−1 dead-end |
 | `n71_repair.py` | k ≤ 3 ladder repair (deletions + completions), pruned and naive, selftest, fresh-process verify |
+| `run_n71_repairs.py` | audited six-seed campaign driver; writes per-seed logs/reports and refuses to aggregate incomplete runs as exhaustive |
 | `secant_blocked_check.py` | frontier-corner secant-blocking check for every archived seed |
 | `fast_lines.py` | line-table builder with pickle cache (verified equal to `no3in.LineTables`; ~10–20× faster at n = 65) |
 | `no3in.py` | reference exact solver and line tables used by the repair code |

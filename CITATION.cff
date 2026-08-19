@@ -5,9 +5,9 @@ authors:
   - family-names: "Wang"
     given-names: "Lutian"
     email: "2792874459@qq.com"
-    orcid: ""
+    affiliation: "School of Artificial Intelligence, Nanjing University"
 date-released: "2026-08-18"
-version: "1.0.0"
+version: "1.0.1"
 license: "MIT"
 keywords:
   - no-three-in-line
@@ -18,9 +18,11 @@ keywords:
 repository-code: "https://github.com/1231hyper/no3in-archive"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.21997174"
-related-resources:
+    value: "10.5281/zenodo.21997173"
+references:
   - type: database
     title: "No-Three-in-Line Problem (source database)"
+    authors:
+      - family-names: "Flammenkamp"
+        given-names: "Achim"
     url: "https://wwwhomes.uni-bielefeld.de/achim/no3in/download/"
-    note: "Revision 2026-08-11; see data/snapshot_manifest.txt for the exact pin."

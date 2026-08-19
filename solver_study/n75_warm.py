@@ -14,6 +14,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import fast_lines
+import ortools
 from ortools.sat.python import cp_model
 
 M = 75
@@ -28,9 +29,11 @@ def main():
     ap.add_argument('--sol', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'solutions_n74_rot4.json'))
     ap.add_argument('--idx', type=int, default=0)
     a = ap.parse_args()
-    print(f"=== n75_warm: maximize with 144-pt warm start (sol={os.path.basename(a.sol)}"
+    print(f"=== n75_warm: maximize with 148-pt warm start (sol={os.path.basename(a.sol)}"
           f"[{a.idx}], time={a.time}s workers={a.workers} seed={a.seed}) ===",
           flush=True)
+    print(f"  OR-Tools {ortools.__version__}; Python "
+          f"{sys.version.split()[0]}", flush=True)
     t0 = time.time()
 
     sd = json.load(open(a.sol))
@@ -86,7 +89,7 @@ def main():
         if os.path.exists(a.out):
             try:
                 prev = json.load(open(a.out))
-                if prev.get('size', 0) >= 145 and len(cb.pts) < 145:
+                if prev.get('size', 0) >= 149 and len(cb.pts) < 149:
                     print(f"  keeping existing {a.out} (size {prev['size']}), "
                           f"discarding own best {len(cb.pts)}", flush=True)
                     return

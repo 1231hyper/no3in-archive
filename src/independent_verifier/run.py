@@ -29,7 +29,7 @@ from .windows import (scan_windows, find_windows_pairs, move1_flip,
                       window_cols_list)
 from .near import near_graph, components
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 PIN_SHA256 = "6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0"
 PIN_SIZE = 23832810
 
@@ -512,11 +512,7 @@ def c16(ctx):
        "35 of 36 cross-class, class graph 13 edges / 11 classes / "
        "components {8, 3}; n = 7: 12 of 12, 6 edges, two 3-class "
        "components; n = 4: 33 of 40, 6 edges, one 4-class component; "
-       "single edges at n = 10, 11, 12, three at n = 13, none at n = 9. "
-       "NOTE: the paper's printed totals list (40, 12, 1, 36, ...) "
-       "swaps the n = 6/7 entries; its own narrative ('at n = 7 all 12 "
-       "refills are cross-class') and this independent re-derivation "
-       "agree on 1 at n = 6, 12 at n = 7",
+       "single edges at n = 10, 11, 12, three at n = 13, none at n = 9",
        "v-dist {1: 473, 2: 26, 3: 18, 11: 4}; totals "
        "{4: 40, 6: 1, 7: 12, 8: 36, 9: 0, 10: 3, 11: 2, 12: 2, 13: 6}; "
        "edges 13/6/6/1/0/1/1/3")
@@ -584,13 +580,10 @@ def c18(ctx):
         ok = ok and cs['near_pairs'] == 37
         ok = ok and cs['near_pairs_by_n'] == {'57': 34, '58': 2, '66': 1}
         ok = ok and cs['near_min'] == {'57': 4, '58': 8, '66': 8}
-    note = ("paper/r7 figures (467/376/296 edges, density 15.4/9.4/6.4, "
-            "corpus 26 pairs with 23 at n=57) are NOT reproducible: the "
-            "corpus run used only the 833 rct4 configs (missing 6 rot2 + "
-            "1 iden classes, which carry 9 d=4 and 2 d=8 pairs); the "
-            "n=15..17 edge counts come from a one-off script that no "
-            "longer exists and contradict its own density 611/3978 "
-            "(r7-canon recompute gives 586, matching this verifier)")
+    note = ("The independent implementation includes all 840 n=57 classes "
+            "and independently reproduces the n=15..17 quotient graphs; "
+            "these checks guard against the omissions corrected before "
+            "archive v1.0.1.")
     return ("PASS" if ok else "FAIL"), {
         "min_dist_per_n": got_d, "density": dens, "edges": edges,
         "largest_components": comps,

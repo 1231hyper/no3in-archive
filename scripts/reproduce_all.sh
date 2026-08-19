@@ -4,7 +4,7 @@
 #
 #   bash scripts/reproduce_all.sh
 #
-# Requires: python 3.8+, the pinned snapshot at data/raw/
+# Requires: Python 3.9+, the pinned snapshot at data/raw/
 # (download with:  python data/download_snapshot.py).  No third-party
 # packages are needed.
 #

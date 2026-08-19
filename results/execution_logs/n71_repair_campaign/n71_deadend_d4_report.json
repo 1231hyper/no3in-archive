@@ -1,0 +1,50 @@
+{
+  "counters": {
+    "gate": 0,
+    "per_k": {
+      "0": {
+        "admissible_fill_attempts": 0,
+        "completed": true,
+        "matching_iterations": 2,
+        "removal_sets_started": 1
+      },
+      "1": {
+        "admissible_fill_attempts": 560,
+        "completed": true,
+        "matching_iterations": 840,
+        "removal_sets_started": 140
+      },
+      "2": {
+        "admissible_fill_attempts": 193480,
+        "completed": true,
+        "matching_iterations": 233520,
+        "removal_sets_started": 9730
+      },
+      "3": {
+        "admissible_fill_attempts": 47725376,
+        "completed": true,
+        "matching_iterations": 53709600,
+        "removal_sets_started": 447580
+      }
+    },
+    "status": "EXHAUSTED"
+  },
+  "environment": {
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "python": "3.12.13"
+  },
+  "input": {
+    "file": "n71_deadend_d4.json",
+    "m": 71,
+    "points": 140,
+    "sha256": "2a2ade853fd9f8571976ed50adb137944a41c26049b9a3de47c85b5eb3de3faf"
+  },
+  "parameters": {
+    "exact_gate_candidate_cap": 0,
+    "kmax": 3,
+    "wall_clock_cap_seconds": 0.0
+  },
+  "schema_version": 1,
+  "status": "EXHAUSTED",
+  "wall_seconds": 57.627118
+}

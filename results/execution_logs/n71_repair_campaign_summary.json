@@ -1,0 +1,245 @@
+{
+  "overall_status": "EXHAUSTED",
+  "parameters": {
+    "exact_gate_candidate_cap_per_seed": 0,
+    "wall_clock_cap_seconds_per_seed": 0.0
+  },
+  "runs": [
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47724320,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "ab32b302fa18f48980be1fe3f7d8d792b69586c0fe639109ace284b6007e6e3f",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_b.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_b_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_b.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 57.726342
+    },
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47724320,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "b8aee34e99f7b3938a67cd4624b6745d7f24dd2d8eb9b4b18b6338a5cbbd1cef",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_c.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_c_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_c.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 57.791712
+    },
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47725376,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "b3d5600c467ec12d7e1b5498f3ca01fcd6aff49f21317b93cc763e1a26caac4f",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_d2.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_d2_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_d2.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 57.315641
+    },
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47725376,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "2a2ade853fd9f8571976ed50adb137944a41c26049b9a3de47c85b5eb3de3faf",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_d4.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_d4_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_d4.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 57.691956
+    },
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47725376,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "9c8bb30dcc76e87c617cdad7602afde5d4050eb3dd16e4d8aa4eb23170403357",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_d5.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_d5_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_d5.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 58.911001
+    },
+    {
+      "counters": {
+        "gate": 0,
+        "per_k": {
+          "0": {
+            "admissible_fill_attempts": 0,
+            "completed": true,
+            "matching_iterations": 2,
+            "removal_sets_started": 1
+          },
+          "1": {
+            "admissible_fill_attempts": 560,
+            "completed": true,
+            "matching_iterations": 840,
+            "removal_sets_started": 140
+          },
+          "2": {
+            "admissible_fill_attempts": 193480,
+            "completed": true,
+            "matching_iterations": 233520,
+            "removal_sets_started": 9730
+          },
+          "3": {
+            "admissible_fill_attempts": 47725376,
+            "completed": true,
+            "matching_iterations": 53709600,
+            "removal_sets_started": 447580
+          }
+        },
+        "status": "EXHAUSTED"
+      },
+      "input_sha256": "47ece0db7643168f90a523bef6ce73984f9c44feb9309318c96eba69d89634bd",
+      "log": "results/execution_logs/n71_repair_campaign/n71_deadend_d6.stdout",
+      "report": "results/execution_logs/n71_repair_campaign/n71_deadend_d6_report.json",
+      "return_code": 0,
+      "seed": "n71_deadend_d6.json",
+      "status": "EXHAUSTED",
+      "wall_seconds": 58.797003
+    }
+  ],
+  "schema_version": 1,
+  "wall_seconds": 348.234223
+}

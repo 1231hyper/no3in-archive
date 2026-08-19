@@ -2,11 +2,11 @@
 # conditioning analysis) uses the Python standard library only: there is
 # nothing to install for reproduce_all.sh.
 #
-# Optional — the solver observations of paper Section 8
+# Optional — exploratory CP-SAT programs retained with paper Section 8
 # (solver_study/n71_warm.py, n73_warm.py, n75_warm.py, n71_deadend.py)
 # additionally require Google OR-Tools (CP-SAT):
 #
-#   pip install ortools
+#   pip install -r requirements-solver.txt
 #
 # Everything else in solver_study/ (repair, selftest, line tables) is
 # standard library only.

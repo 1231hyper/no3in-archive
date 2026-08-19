@@ -29,9 +29,11 @@
 #   python n71_repair.py                       # run on n71_deadend.json
 #   python n71_repair.py --cap 1200 --out n71_repair_solution.json
 import argparse
+import hashlib
 import itertools
 import json
 import os
+import platform
 import random
 import subprocess
 import sys
@@ -42,6 +44,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from no3in import no3_valid
 
 REPO = os.path.dirname(os.path.abspath(__file__))
+
+FOUND = "FOUND"
+EXHAUSTED = "EXHAUSTED"
+TIMED_OUT = "TIMED_OUT"
+CANDIDATE_CAP = "CANDIDATE_CAP"
+INVALID_INPUT = "INVALID_INPUT"
 
 
 def line_cells(p, q, n):
@@ -80,17 +88,41 @@ def blocking_pairs(pts, cell, cache):
     return res
 
 
-def ladder_repair_pruned(partial, n, kmax=3, cap_candidates=4000, log=None,
-                         stats=None):
+def ladder_repair_pruned(partial, n, kmax=3, deadline=None,
+                         gate_candidate_cap=None, log=None, stats=None):
     """Remove k points, close deficits with d0+k additions (all bijections
     deficit-rows -> deficit-cols); pruned by witness-precomputed blocking
-    pairs.  Returns a valid 2n-set or None.  stats (optional dict) collects
-    per-k (A,perm) iteration counts and distinct-candidate counts, plus
-    'gate' = no3_valid calls."""
+    pairs.  Returns ``(solution, status)``.  ``status`` is one of FOUND,
+    EXHAUSTED, TIMED_OUT, CANDIDATE_CAP, or INVALID_INPUT.  Only EXHAUSTED
+    certifies that every requested repair was considered and none worked.
+
+    ``deadline`` is an absolute ``time.monotonic()`` value.  A non-None
+    ``gate_candidate_cap`` is a diagnostic limit on exact ``no3_valid``
+    calls; reaching it is explicitly incomplete and can never be reported as
+    an exhaustive negative result.  ``stats`` (optional dict) is updated
+    during the search so a timed-out run still has auditable counters.
+    """
+    if stats is None:
+        stats = {}
+    stats.clear()
+    stats.update({"status": "RUNNING", "per_k": {}, "gate": 0})
+
+    def finish(status, reason=None):
+        stats["status"] = status
+        if reason is not None:
+            stats["stop_reason"] = reason
+        return None, status
+
+    def deadline_reached():
+        return deadline is not None and time.monotonic() >= deadline
+
     P = list(partial)
     s = len(P)
     if s == 2 * n:
-        return P if no3_valid(P, n) is None else None
+        if no3_valid(P, n) is None:
+            stats["status"] = FOUND
+            return P, FOUND
+        return finish(INVALID_INPUT, "2n-point input is not no-three-in-line")
     rows = [0] * n
     cols = [0] * n
     for (r, c) in P:
@@ -98,31 +130,37 @@ def ladder_repair_pruned(partial, n, kmax=3, cap_candidates=4000, log=None,
         cols[c] += 1
     d0 = 2 * n - s
     if d0 <= 0 or d0 > 5:
-        return None
+        return finish(INVALID_INPUT, "point deficit is outside 1..5")
     R0 = []
     C0 = []
     for r in range(n):
         if rows[r] > 2:
-            return None
+            return finish(INVALID_INPUT, "a row contains more than two points")
         for _ in range(2 - rows[r]):
             R0.append(r)
     for c in range(n):
         if cols[c] > 2:
-            return None
+            return finish(INVALID_INPUT, "a column contains more than two points")
         for _ in range(2 - cols[c]):
             C0.append(c)
     if len(R0) != d0 or len(C0) != d0:
         # malformed partial (row/col counts inconsistent with size) -- reject
-        return None
+        return finish(INVALID_INPUT, "row/column deficits are inconsistent")
     cache = {}
     checked = set()
     Pset = set(P)
     for k in range(0, kmax + 1):
         if k + d0 > 5:  # >5 add cells: matching/validity blowup guard
             break
-        n_iter = 0
-        n_cand = 0
+        kstats = {"matching_iterations": 0,
+                  "admissible_fill_attempts": 0,
+                  "removal_sets_started": 0,
+                  "completed": False}
+        stats["per_k"][str(k)] = kstats
         for A in itertools.combinations(P, k):
+            if deadline_reached():
+                return finish(TIMED_OUT, "wall-clock deadline reached")
+            kstats["removal_sets_started"] += 1
             Aset = set(A)
             R = R0 + [ra for (ra, ca) in A]
             C = C0 + [ca for (ra, ca) in A]
@@ -130,13 +168,19 @@ def ladder_repair_pruned(partial, n, kmax=3, cap_candidates=4000, log=None,
                 continue
             remaining = Pset - Aset
             for cperm in itertools.permutations(C):
-                n_iter += 1
+                kstats["matching_iterations"] += 1
+                # monotonic() on every one of tens of millions of matching
+                # iterations is measurable overhead; check at least every
+                # 1024 iterations and at every new removal set above.
+                if (kstats["matching_iterations"] & 1023) == 0 \
+                        and deadline_reached():
+                    return finish(TIMED_OUT, "wall-clock deadline reached")
                 adds = [(R[i], cperm[i]) for i in range(len(R))]
                 if len(set(adds)) != len(adds):
                     continue
                 if any(p in remaining for p in adds):
                     continue
-                n_cand += 1
+                kstats["admissible_fill_attempts"] += 1
                 ok = True
                 for f in adds:
                     for (p, q) in blocking_pairs(P, f, cache):
@@ -168,17 +212,21 @@ def ladder_repair_pruned(partial, n, kmax=3, cap_candidates=4000, log=None,
                     key = tuple(sorted(cand))
                     if key not in checked:
                         checked.add(key)
-                        if stats is not None:
-                            stats['gate'] = stats.get('gate', 0) + 1
+                        stats["gate"] += 1
                         if no3_valid(cand, n) is None:
-                            return cand
-                        if len(checked) > cap_candidates:
+                            stats["status"] = FOUND
+                            return cand, FOUND
+                        if (gate_candidate_cap is not None and
+                                len(checked) >= gate_candidate_cap):
                             if log:
-                                log("  [ladder] candidate cap reached -- stop")
-                            return None
-        if stats is not None:
-            stats[k] = (n_iter, n_cand)
-    return None
+                                log("  [ladder] exact-gate candidate cap "
+                                    "reached -- search incomplete")
+                            return finish(
+                                CANDIDATE_CAP,
+                                "exact-gate candidate cap reached")
+        kstats["completed"] = True
+    stats["status"] = EXHAUSTED
+    return None, EXHAUSTED
 
 
 def ladder_repair_naive(partial, n, kmax=3):
@@ -244,6 +292,24 @@ def fresh_verify(pts, n):
     return out.stdout.strip() == 'OK', out.stdout.strip()
 
 
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def write_json(path, value):
+    parent = os.path.dirname(os.path.abspath(path))
+    os.makedirs(parent, exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(value, f, indent=2, sort_keys=True)
+        f.write("\n")
+    os.replace(tmp, path)
+
+
 def selftest():
     """Synthetic partials from known 2n-solutions: pruned vs naive ladder."""
     rng = random.Random(12345)
@@ -261,7 +327,7 @@ def selftest():
             del_set = rng.sample(S, d0)
             partial = [p for p in S if p not in del_set]
             t0 = time.time()
-            sol_pr = ladder_repair_pruned(partial, n)
+            sol_pr, status_pr = ladder_repair_pruned(partial, n)
             t_pr = time.time() - t0
             t0 = time.time()
             sol_na = ladder_repair_naive(partial, n)
@@ -269,7 +335,8 @@ def selftest():
             ok_pr = sol_pr is not None and no3_valid(sol_pr, n) is None \
                 and [sum(1 for p in sol_pr if p[0] == r) for r in range(n)] \
                 == [2] * n
-            status = "OK" if (sol_pr is None) == (sol_na is None) and ok_pr \
+            status = "OK" if status_pr == FOUND and \
+                (sol_pr is None) == (sol_na is None) and ok_pr \
                 else "MISMATCH"
             if status != "OK":
                 fails += 1
@@ -281,13 +348,14 @@ def selftest():
         row_r = rng.randrange(n)
         partial0 = [p for p in S if p[0] != row_r]
         t0 = time.time()
-        sol_pr0 = ladder_repair_pruned(partial0, n)
+        sol_pr0, status_pr0 = ladder_repair_pruned(partial0, n)
         t_pr0 = time.time() - t0
         t0 = time.time()
         sol_na0 = ladder_repair_naive(partial0, n)
         t_na0 = time.time() - t0
         ok0 = sol_pr0 is not None and no3_valid(sol_pr0, n) is None
-        status0 = "OK" if ok0 and (sol_na0 is not None) else "MISMATCH"
+        status0 = "OK" if status_pr0 == FOUND and ok0 and \
+            (sol_na0 is not None) else "MISMATCH"
         if status0 != "OK":
             fails += 1
         print(f"  selftest n={n} 0-row: pruned={sol_pr0 is not None} "
@@ -302,14 +370,23 @@ def main():
     ap.add_argument('--deadend', default=os.path.join(REPO, 'n71_deadend.json'))
     ap.add_argument('--out', default=os.path.join(REPO, 'n71_repair_solution.json'))
     ap.add_argument('--cap', type=float, default=2400,
-                    help='wall-clock seconds for the repair loop '
-                         '(n=15 dead-end exhausts in ~1s; n=71 is ~125x '
-                         'more triples + ~24x larger pair scans)')
+                    help='wall-clock seconds for the repair loop; 0 disables '
+                         'the deadline. A timed-out run is reported as '
+                         'INCOMPLETE and supports no exhaustive claim')
+    ap.add_argument('--candidate-cap', type=int, default=0,
+                    help='diagnostic cap on exact no3_valid gate calls; 0 '
+                         'disables it. Reaching the cap is INCOMPLETE')
+    ap.add_argument('--report', default=None,
+                    help='write a machine-readable run report (default: '
+                         'results/execution_logs/<seed>_repair_report.json)')
     ap.add_argument('--selftest', action='store_true')
     a = ap.parse_args()
 
     if a.selftest:
-        sys.exit(1 if selftest() else 0)
+        return 1 if selftest() else 0
+
+    if a.cap < 0 or a.candidate_cap < 0:
+        ap.error('--cap and --candidate-cap must be nonnegative')
 
     if not os.path.exists(a.deadend):
         alt = None
@@ -324,8 +401,9 @@ def main():
             a.deadend = alt
         else:
             print(f"[n71_repair] {a.deadend} not present -- nothing to do")
-            return
-    d = json.load(open(a.deadend))
+            return 2
+    with open(a.deadend, "r", encoding="utf-8") as f:
+        d = json.load(f)
     m = d["m"]
     pts = sorted(tuple(p) for p in d["points"])
     n = m
@@ -333,6 +411,9 @@ def main():
           flush=True)
     bad = no3_valid(pts, n)
     print(f"  partial no3_valid={bad}", flush=True)
+    if bad is not None:
+        print("  INVALID INPUT: partial contains a collinear triple", flush=True)
+        return 2
     if len(pts) == 2 * n:
         # solver closed the gap itself: verify and announce
         ok, msg = fresh_verify(pts, n)
@@ -342,11 +423,11 @@ def main():
                        "source": "deadend_closed"},
                       open(a.out, "w"), indent=1)
             print(f"  *** f({m}) = {2 * m} settled; saved {a.out}")
-        return
+        return 0 if ok else 2
     if len(pts) < 2 * n - 5:
         print(f"  partial too far from 2n (size={len(pts)}) -- repair not "
               f"designed for d0>5; nothing to do")
-        return
+        return 2
     rows = [sum(1 for p in pts if p[0] == r) for r in range(n)]
     cols = [sum(1 for p in pts if p[1] == c) for c in range(n)]
     print(f"  row counts: {sorted(rows, reverse=True)[:5]} ... "
@@ -374,35 +455,75 @@ def main():
         print(f"  deficit row r={r0}: {nrow_blocked}/{n - rows[r0]} empty "
               f"cells blocked (row-mate count {rows[r0]})", flush=True)
 
-    t0 = time.time()
+    t0 = time.monotonic()
+    deadline = None if a.cap == 0 else t0 + a.cap
+    gate_cap = None if a.candidate_cap == 0 else a.candidate_cap
     stats = {}
-    sol = ladder_repair_pruned(pts, n, kmax=3,
-                               log=lambda m_: print(m_, flush=True),
-                               stats=stats)
-    wall = time.time() - t0
-    for k in sorted(kk for kk in stats if kk != 'gate'):
-        it, ca = stats[k]
-        print(f"  k={k}: {it} (A,perm) iterations, {ca} distinct candidates",
-              flush=True)
+    sol, search_status = ladder_repair_pruned(
+        pts, n, kmax=3, deadline=deadline,
+        gate_candidate_cap=gate_cap,
+        log=lambda m_: print(m_, flush=True), stats=stats)
+    wall = time.monotonic() - t0
+    for k in sorted(stats.get("per_k", {}), key=int):
+        ks = stats["per_k"][k]
+        print(f"  k={k}: {ks['matching_iterations']} matching iterations, "
+              f"{ks['admissible_fill_attempts']} admissible fill attempts, "
+              f"completed={ks['completed']}", flush=True)
     print(f"  no3_valid gate calls: {stats.get('gate', 0)}", flush=True)
+
+    if a.report is None:
+        root = os.path.dirname(REPO)
+        stem = os.path.splitext(os.path.basename(a.deadend))[0]
+        a.report = os.path.join(root, "results", "execution_logs",
+                                stem + "_repair_report.json")
+    report = {
+        "schema_version": 1,
+        "status": search_status,
+        "input": {
+            "file": os.path.basename(a.deadend),
+            "sha256": sha256_file(a.deadend),
+            "m": m,
+            "points": len(pts),
+        },
+        "parameters": {
+            "kmax": 3,
+            "wall_clock_cap_seconds": a.cap,
+            "exact_gate_candidate_cap": a.candidate_cap,
+        },
+        "counters": stats,
+        "wall_seconds": round(wall, 6),
+        "environment": {
+            "python": platform.python_version(),
+            "platform": platform.platform(),
+        },
+    }
+    write_json(a.report, report)
+    print(f"  run report: {os.path.relpath(a.report, os.path.dirname(REPO))}",
+          flush=True)
+
     if sol is None:
-        print(f"[n71_repair] k<=3 REPAIR FAILED in {wall:.0f}s "
-              f"(partial={len(pts)}): f({m})=142 not settled; dead-end is "
-              f">=4 removals from any solution at k<=3", flush=True)
-        return
+        if search_status == EXHAUSTED:
+            print(f"[n71_repair] EXHAUSTED k<=3 in {wall:.0f}s: no "
+                  f"completion; this seed has deletion distance >=4 from "
+                  f"any 2N-point solution (if one exists)", flush=True)
+            return 0
+        print(f"[n71_repair] INCOMPLETE status={search_status} after "
+              f"{wall:.1f}s; NO EXHAUSTIVE CONCLUSION may be drawn",
+              flush=True)
+        return 3 if search_status == TIMED_OUT else 4
     bad = no3_valid(sol, n)
     print(f"  candidate no3_valid={bad} wall={wall:.0f}s", flush=True)
     ok, msg = fresh_verify(sol, n)
     print(f"  fresh-process verify: {msg}", flush=True)
     if not ok:
         print("  [ERROR] fresh verification FAILED -- not announcing", flush=True)
-        return
-    json.dump({"m": m, "size": len(sol), "points": sorted(sol),
-               "source": "k3_ladder_repair", "wall_s": round(wall, 1)},
-              open(a.out, "w"), indent=1)
+        return 2
+    write_json(a.out, {"m": m, "size": len(sol), "points": sorted(sol),
+                       "source": "k3_ladder_repair"})
     print(f"  *** SETTLED: f({m}) = {2 * m}; witness saved to {a.out} "
           f"(fresh-process verified)", flush=True)
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

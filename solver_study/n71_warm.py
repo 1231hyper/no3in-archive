@@ -14,6 +14,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import fast_lines
+import ortools
 from ortools.sat.python import cp_model
 
 M = 71
@@ -34,6 +35,8 @@ def main():
     print(f"=== n71_warm: maximize with 140-pt warm start (sol={os.path.basename(a.sol)}"
           f"[{a.idx}], time={a.time}s workers={a.workers} seed={a.seed}) ===",
           flush=True)
+    print(f"  OR-Tools {ortools.__version__}; Python "
+          f"{sys.version.split()[0]}", flush=True)
     t0 = time.time()
 
     sd = json.load(open(a.sol))

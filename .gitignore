@@ -9,5 +9,9 @@ __pycache__/
 # solver line-table pickle caches (generated next to the scripts)
 *.pkl
 
-# per-run execution logs (runtime artifacts; not versioned)
-results/execution_logs/
+# Per-run execution logs are normally runtime artifacts.  The audited N=71
+# campaign used by Section 8 is the sole versioned exception.
+results/execution_logs/*
+!results/execution_logs/n71_repair_campaign/
+!results/execution_logs/n71_repair_campaign/**
+!results/execution_logs/n71_repair_campaign_summary.json

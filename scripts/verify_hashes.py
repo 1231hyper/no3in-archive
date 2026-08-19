@@ -52,6 +52,19 @@ TRACKED = [
     "data/derived_tables/conditioning_summary.json",
     "data/derived_tables/poisson_fits.json",
     "results/verifier_report.json",
+    "results/execution_logs/n71_repair_campaign_summary.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_b.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_b_report.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_c.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_c_report.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d2.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d2_report.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d4.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d4_report.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d5.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d5_report.json",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d6.stdout",
+    "results/execution_logs/n71_repair_campaign/n71_deadend_d6_report.json",
 ]
 
 

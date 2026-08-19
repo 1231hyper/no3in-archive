@@ -64,7 +64,8 @@ src/
                                  Monte Carlo (fixed seed), Poisson fits
 solver_study/
     README.md                    paper Section 8 materials (CP-SAT
-                                 observations, k <= 3 repair)
+                                 observations, audited k <= 3 repair)
+    run_n71_repairs.py           six-seed exhaustive campaign driver
 scripts/
     reproduce_all.sh             one-command reproduction
     verify_hashes.py             hash check of all artifacts
@@ -73,6 +74,10 @@ results/
     verifier_report.json         per-claim verdicts (generated)
     execution_logs/              per-run logs (generated, not versioned)
 ```
+
+The v1.0.1 release additionally archives the six N=71 repair reports, their
+stdout logs, and the aggregate campaign summary used for the `[Local-Exh]`
+statement. Other ad hoc execution logs remain unversioned.
 
 ## What is verified (claim list)
 
@@ -109,9 +114,12 @@ third-party dependencies (`requirements.txt` documents this; an
 uses Python's `random` with a fixed seed (20260818, 10⁶ samples); its
 parameters are written into the log.
 
-The solver observations of paper Section 8 (`solver_study/`) are the one
-exception: the four CP-SAT scripts need Google OR-Tools (optional;
-`pip install ortools`), everything else there is standard library.
+The optional exploratory CP-SAT programs in `solver_study/` are the one
+exception: the four CP-SAT scripts use the pinned Google OR-Tools environment
+(`pip install -r requirements-solver.txt`).  The archived N = 71 repair
+search, its self-tests, and all frontier-secant checks remain standard-library
+only.  The manuscript makes no archived long-run CP-SAT claim for N = 73 or
+N = 75.
 
 ## Source database and citation
 
@@ -122,7 +130,9 @@ exception: the four CP-SAT scripts need Google OR-Tools (optional;
   SHA-256 `6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0`.
 - Paper: *Cycle structure and the Hamming geometry of no-three-in-line
   solutions* (in preparation; see `CITATION.cff`).
-- Archive: Zenodo, https://doi.org/10.5281/zenodo.21997174.
+- Archive (all versions): https://doi.org/10.5281/zenodo.21997173. Version
+  1.0.0 is record 21997174; release 1.0.1 should be deposited only after the
+  checks in `RELEASE_CHECKLIST.md` pass.
 
 ## Licence
 

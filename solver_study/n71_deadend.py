@@ -14,6 +14,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import fast_lines
+import ortools
 from ortools.sat.python import cp_model
 
 M = 71
@@ -28,6 +29,8 @@ def main():
     a = ap.parse_args()
     print(f"=== n71_deadend: unrestricted maximize, stop at 141, "
           f"time={a.time}s workers={a.workers} ===", flush=True)
+    print(f"  OR-Tools {ortools.__version__}; Python "
+          f"{sys.version.split()[0]}", flush=True)
     t0 = time.time()
 
     model = cp_model.CpModel()

@@ -1,0 +1,40 @@
+name: quick checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  standard-library:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile Python sources
+        run: python -m compileall -q src scripts solver_study
+      - name: Check committed artifact hashes
+        run: python scripts/verify_hashes.py --check
+      - name: Check frontier secants
+        run: python solver_study/secant_blocked_check.py
+      - name: Check pruned repair against the naive reference
+        run: python solver_study/n71_repair.py --selftest
+
+  citation-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate CITATION.cff
+        run: |
+          python -m pip install --disable-pip-version-check cffconvert
+          cffconvert --validate
+      - name: Validate Zenodo JSON
+        run: python -m json.tool .zenodo.json >/dev/null
