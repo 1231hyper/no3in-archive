@@ -1212,6 +1212,7 @@ def main():
 
     with open(args.out, "w", newline="\n", encoding="utf-8") as f:
         json.dump(res, f, indent=1, sort_keys=True, default=str)
+        f.write("\n")
     npass = sum(1 for c in res["claims"] if c["status"] == "PASS")
     nfail = sum(1 for c in res["claims"] if c["status"] == "FAIL")
     nskip = sum(1 for c in res["claims"] if c["status"] == "SKIP")
