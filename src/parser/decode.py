@@ -1,6 +1,6 @@
 """Database line decoder (vendored from r7_census_laws.py, verbatim).
 
-Format (Flammenkamp, page revision 2026-08-11): each line is a
+Format (Flammenkamp, page revision 2026-08-19): each line is a
 symmetry-class character from ". : / - o c x + *" (iden rot2 dia1 ort1
 rot4 rct4 dia2 ort2 full) followed by the occupied columns, two per row,
 top to bottom, encoded in the 90-character column alphabet

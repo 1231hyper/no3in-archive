@@ -19,8 +19,8 @@ import sys
 import urllib.request
 
 BASE = "https://wwwhomes.uni-bielefeld.de/achim/no3in/download/all_known_solutions"
-SHA256 = "6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0"
-SIZE = 23832810
+SHA256 = "557645ec311e43a619f8926e52f99fb03ddbe0d65e05a3acd99399f3b7bd9023"
+SIZE = 23833984
 CHUNK = 1 << 20
 
 

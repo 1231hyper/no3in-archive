@@ -29,9 +29,9 @@ from .windows import (scan_windows, find_windows_pairs, move1_flip,
                       window_cols_list)
 from .near import near_graph, components
 
-VERSION = "1.0.1"
-PIN_SHA256 = "6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0"
-PIN_SIZE = 23832810
+VERSION = "1.1.0"
+PIN_SHA256 = "557645ec311e43a619f8926e52f99fb03ddbe0d65e05a3acd99399f3b7bd9023"
+PIN_SIZE = 23833984
 
 # D4 transform indices (see geom.d4_transforms):
 #   0 id, 1 R90, 2 R180, 3 R270, 4 H, 5 V, 6 D1, 7 D2
@@ -90,11 +90,11 @@ def claim(cid, section, description, expected):
 # --- C01 snapshot integrity ------------------------------------------
 
 @claim("C01", "2.3 / 11",
-       "Snapshot totals: 430,991 lines, n = 2..76; 189,707 classes at "
-       "n <= 20, 241,165 stored at 21 <= n <= 57, 119 at n = 58..76; "
+       "Snapshot totals: 431,004 lines, n = 2..76; 189,707 classes at "
+       "n <= 20, 241,175 stored at 21 <= n <= 57, 122 at n = 58..76; "
        "every line decodes (2 points per row/column) and no collinear "
        "triple in any class of the checked coverage",
-       "lines 430991; sums 189707/241165/119; 0 decode/degree/triple failures")
+       "lines 431004; sums 189707/241175/122; 0 decode/degree/triple failures")
 def c01(ctx):
     t = ctx['tables']['snapshot']
     need(t.get('complete'), "full snapshot analysis (max-n)")
@@ -102,12 +102,12 @@ def c01(ctx):
     out = {}
     ok = True
     for label, measured, expected in [
-        ("lines", t['lines'], 430991),
+        ("lines", t['lines'], 431004),
         ("n_min", t['n_min'], 2),
         ("n_max", t['n_max'], 76),
         ("sum_le20", t['sum_le20'], 189707),
-        ("sum_21_57", t['sum_21_57'], 241165),
-        ("sum_58_76", t['sum_58_76'], 119),
+        ("sum_21_57", t['sum_21_57'], 241175),
+        ("sum_58_76", t['sum_58_76'], 122),
         ("decode_errors", t['decode_errors'], 0),
         ("degree_errors", t['degree_errors'], 0),
         ("triple_failures", t['triple_failures'], 0),
@@ -262,19 +262,19 @@ def c07(ctx):
 # --- C08 scan 21..57 ---------------------------------------------------
 
 @claim("C08", "2.3 / 3 / 11",
-       "Scan over the stored classes, 21 <= n <= 57: 241,165 classes / "
-       "900,672 labeled; minimum max-spectrum L(21) = 3, L(22) <= 4, "
+       "Scan over the stored classes, 21 <= n <= 57: 241,175 classes / "
+       "900,712 labeled; minimum max-spectrum L(21) = 3, L(22) <= 4, "
        "L(23) <= 4, L(26) = L(28) = 2 (one ort1 class, 4 labeled each, "
        "all-2 spectra), no other L = 2 witness in 21..57, min 35: 13, "
        "min 57: 10; N3^known(21) = 2 classes / 8 labeled (spectra "
        "(2,2,2,3,3,3,3,3)); N3^known(22) = 0 over 1,285; N3^known(23) = "
        "0 over 4,033",
-       "sums 241165 / 900672; mins {21:3, 22:4, 23:4, 26:2, 28:2, 35:13, "
+       "sums 241175 / 900712; mins {21:3, 22:4, 23:4, 26:2, 28:2, 35:13, "
        "57:10}; L2 only at {26, 28}; N3 21: 2/8, 22: 0/1285, 23: 0/4033")
 def c08(ctx):
     sc = ctx['tables']['scan']
     need(sc is not None, "scan phase (max-n >= 57)")
-    ok = (sc['total_classes'], sc['total_labeled']) == (241165, 900672)
+    ok = (sc['total_classes'], sc['total_labeled']) == (241175, 900712)
     mins = sc['mins']
     exp_mins = {'21': 3, '22': 4, '23': 4, '26': 2, '28': 2, '35': 13,
                 '57': 10}
@@ -296,24 +296,24 @@ def c08(ctx):
 # --- C09 corpus --------------------------------------------------------
 
 @claim("C09", "2.3 / 4.1 / 3",
-       "Corpus: 959 classes, n = 57..76; D4-orbit histogram "
-       "{2: 112, 4: 846, 8: 1}, 3,616 labeled (112 rot4 + 840 rct4 + 6 "
+       "Corpus: 962 classes, n = 57..76; D4-orbit histogram "
+       "{2: 112, 4: 849, 8: 1}, 3,628 labeled (112 rot4 + 843 rct4 + 6 "
        "rot2 + 1 iden); n = 57 section: 833 rct4 + 6 rot2 + 1 iden = "
-       "840 classes, 3,364 labeled; rct4 spread 833@57, 1 each at 59, "
-       "61, 63, 65, 67, 2@69; L-bounds L(57) <= 10, L(58) <= 7, "
-       "L(70) <= 17; the n = 57 iden class has orbit 8 and spectrum "
-       "(2, 4, 4, 47)",
-       "959 / {2:112, 4:846, 8:1} / 3616; 840 / 3364; mins 10/7/17; "
+       "840 classes, 3,364 labeled; rct4 spread 833@57, 2@59, 1 each at "
+       "61, 63, 65, 67, 2@69, 1@71, 1@73; L-bounds L(57) <= 10, "
+       "L(58) <= 7, L(70) <= 17; the n = 57 iden class has orbit 8 and "
+       "spectrum (2, 4, 4, 47)",
+       "962 / {2:112, 4:849, 8:1} / 3628; 840 / 3364; mins 10/7/17; "
        "iden 57: orbit 8, (2,4,4,47)")
 def c09(ctx):
     cs = ctx['tables']['corpus']
     need(cs is not None, "corpus phase (max-n >= 76)")
-    ok = (cs['classes'] == 959 and cs['labeled'] == 3616)
-    ok = ok and (cs['orbit_hist'] == {'2': 112, '4': 846, '8': 1})
+    ok = (cs['classes'] == 962 and cs['labeled'] == 3628)
+    ok = ok and (cs['orbit_hist'] == {'2': 112, '4': 849, '8': 1})
     ok = ok and (cs['n57_classes'] == 840 and cs['n57_labeled'] == 3364)
     ok = ok and (cs['rct4_spread'] ==
-                 {'57': 833, '59': 1, '61': 1, '63': 1, '65': 1, '67': 1,
-                  '69': 2})
+                 {'57': 833, '59': 2, '61': 1, '63': 1, '65': 1, '67': 1,
+                  '69': 2, '71': 1, '73': 1})
     ok = ok and (cs['minL'].get('57') == 10 and cs['minL'].get('58') == 7
                  and cs['minL'].get('70') == 17)
     ok = ok and (cs['iden57_orbit'] == 8 and
@@ -326,11 +326,11 @@ def c09(ctx):
 @claim("C10", "2.2 / 4.1",
        "Every corpus rct4 class has true stabilizer exactly {I, R180} "
        "(orbit 4, no reflection, no quarter-turn representative)",
-       "840 / 840 with stabilizer (0, 2)")
+       "843 / 843 with stabilizer (0, 2)")
 def c10(ctx):
     cs = ctx['tables']['corpus']
     need(cs is not None, "corpus phase (max-n >= 76)")
-    return ("PASS" if cs['rct4_audit'] == [840, 840] else "FAIL"), \
+    return ("PASS" if cs['rct4_audit'] == [843, 843] else "FAIL"), \
         {"rct4_count": cs['rct4_audit'][0],
          "with_stab_01": cs['rct4_audit'][1]}, ""
 
@@ -355,8 +355,8 @@ SMALL_OPEN = {2: 0.0, 3: 50.0, 4: 0.0, 5: 31.25, 6: 0.0, 7: 7.58}
 @claim("C11", "7",
        "Corner barrier: labeled blocked share of the frontier corner "
        "(n,n) at n = 8..20; class b-histograms; b = 4 share; labeled "
-       "open counts; small-n open shares n = 2..7; corpus 957/959 "
-       "classes b = 4, 4 open labeled of 3,616 (99.889%)",
+       "open counts; small-n open shares n = 2..7; corpus 960/962 "
+       "classes b = 4, 4 open labeled of 3,628 (99.890%)",
        "blocked " + str(BLOCKED_8_20) + "; open " + str(OPEN_8_20) +
        "; small " + str(SMALL_OPEN))
 def c11(ctx):
@@ -378,9 +378,9 @@ def c11(ctx):
             ok = ok and approx(cb[n]['open_pct'], SMALL_OPEN[n], 0.05)
     cs = ctx['tables']['corpus']
     if cs is not None:
-        ok = ok and cs['b4_classes'] == 957
+        ok = ok and cs['b4_classes'] == 960
         ok = ok and cs['open_labeled'] == 4
-        ok = ok and approx(cs['blocked_pct'], 99.889, 0.01)
+        ok = ok and approx(cs['blocked_pct'], 99.890, 0.01)
     return ("PASS" if ok else "FAIL"), {
         "blocked_pct": [round(cb[n]['blocked_pct'], 2) for n in range(8, 21)],
         "open_labeled": [cb[n]['open_labeled'] for n in range(8, 21)],

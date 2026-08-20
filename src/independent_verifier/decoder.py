@@ -1,7 +1,7 @@
 """Fresh decoder for Flammenkamp's no-three-in-line class database.
 
 Implemented from the published format specification (source page section
-"About the implemented Algorithm", page revision 2026-08-11) — NOT from
+"About the implemented Algorithm", page revision 2026-08-19) — NOT from
 the primary parser in src/parser/.  Independent code path by design.
 
 Specification (quoted from the source page, verbatim where possible):

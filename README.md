@@ -75,7 +75,13 @@ results/
     execution_logs/              per-run logs (generated, not versioned)
 ```
 
-The v1.0.1 release additionally archives the six N=71 repair reports, their
+The v1.1.0 release recomputes all corpus statistics against Flammenkamp's
+revised database (2026-08-19 revision): 13 added classes (ten rot2 classes
+by Kudriashov at n = 33, 36, 37, 39; one rct4 class at n = 59; the Heule
+record classes at n = 71, 73), a 962-class / 3,628-labeled corpus, and the
+resolved values f(71) = 142, f(73) = 146.
+
+The v1.0.1 release additionally archived the six N=71 repair reports, their
 stdout logs, and the aggregate campaign summary used for the `[Local-Exh]`
 statement. Other ad hoc execution logs remain unversioned.
 
@@ -84,7 +90,7 @@ statement. Other ad hoc execution logs remain unversioned.
 The independent verifier re-implements the parser from Flammenkamp's format
 specification and re-derives, without importing any `src/parser` module:
 
-1. Snapshot integrity: 430,991 lines, n = 2..76, pinned SHA-256.
+1. Snapshot integrity: 431,004 lines, n = 2..76, pinned SHA-256.
 2. Per-n class counts, labeled totals and marker census for n ≤ 20
    (cross-checked against OEIS A000755 / A000769).
 3. The n = 20 decomposition: 675 rot2 + 16 rot4 + 2 dia2 + 17 dia1 +
@@ -97,8 +103,8 @@ specification and re-derives, without importing any `src/parser` module:
 6. The N₃ series (labeled counts of max-cycle ≤ 3 solutions, n = 8..20).
 7. The min max-spectrum scan over all stored classes for 21 ≤ n ≤ 57
    (L(21) = 3 exact; L(22) ≤ 4; L(23) ≤ 4; L(26) = L(28) = 2).
-8. The corpus statistics (959 classes, orbit histogram {2:112, 4:846,
-   8:1}, 3,616 labeled, rct4 spread over n = 57..69).
+8. The corpus statistics (962 classes, orbit histogram {2:112, 4:849,
+   8:1}, 3,628 labeled, rct4 spread over n = 57..73).
 9. The conditioning mechanism (joint (T, X) distribution over all
    A001499 matrices): the verifier independently re-derives the n = 5, 6
    enumerations and the exact E_pair formula checks; the analysis
@@ -126,12 +132,12 @@ N = 75.
 - Source database: Flammenkamp's no-three-in-line page,
   https://wwwhomes.uni-bielefeld.de/achim/no3in/ (download directory:
   https://wwwhomes.uni-bielefeld.de/achim/no3in/download/),
-  revision 2026-08-11, `all_known_solutions` = 23,832,810 bytes,
-  SHA-256 `6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0`.
+  revision 2026-08-19, `all_known_solutions` = 23,833,984 bytes,
+  SHA-256 `557645ec311e43a619f8926e52f99fb03ddbe0d65e05a3acd99399f3b7bd9023`.
 - Paper: *Cycle structure and the Hamming geometry of no-three-in-line
   solutions* (in preparation; see `CITATION.cff`).
 - Archive (all versions): https://doi.org/10.5281/zenodo.21997173. Version
-  1.0.0 is record 21997174; release 1.0.1 should be deposited only after the
+  1.0.0 is record 21997174; release 1.1.0 should be deposited only after the
   checks in `RELEASE_CHECKLIST.md` pass.
 
 ## Licence

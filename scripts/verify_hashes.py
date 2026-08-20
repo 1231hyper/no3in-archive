@@ -27,8 +27,8 @@ MANIFEST = os.path.join("results", "expected_hashes.txt")
 # pinned hash of the raw snapshot (data/snapshot_manifest.txt, identical
 # to scripts/reproduce_all.sh PIN_SHA256)
 RAW_REL = "data/raw/all_known_solutions.txt"
-RAW_SHA256 = ("6c385257c34af354a596b718002e2ef552b52da54b8e"
-              "5065ec6a8b8c4d5026e0")
+RAW_SHA256 = ("557645ec311e43a619f8926e52f99fb03ddbe0d65e05a3acd"
+              "99399f3b7bd9023")
 # files that are always part of the archive (if present)
 TRACKED = [
     RAW_REL,

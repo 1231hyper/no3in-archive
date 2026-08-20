@@ -31,8 +31,8 @@ cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 LOGDIR="results/execution_logs"
 SNAPSHOT="data/raw/all_known_solutions.txt"
-PIN_SHA256="6c385257c34af354a596b718002e2ef552b52da54b8e5065ec6a8b8c4d5026e0"
-PIN_SIZE=23832810
+PIN_SHA256="557645ec311e43a619f8926e52f99fb03ddbe0d65e05a3acd99399f3b7bd9023"
+PIN_SIZE=23833984
 
 SKIP_COND=0
 SKIP_VER=0

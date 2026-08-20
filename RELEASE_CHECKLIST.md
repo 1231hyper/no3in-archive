@@ -1,11 +1,11 @@
-# Release checklist for v1.0.1
+# Release checklist for v1.1.0
 
 Run these checks from a clean clone or the GitHub release-candidate ZIP.  Do
 not describe a capped repair run as exhaustive: only an `EXHAUSTED` status for
 all six seeds supports the Section 8 deletion-distance statement.
 
 1. Confirm that `CITATION.cff`, `.zenodo.json`, `README.md`, and
-   `src/independent_verifier/run.py` all identify version `1.0.1`.
+   `src/independent_verifier/run.py` all identify version `1.1.0`.
 2. Validate citation metadata:
 
    ```bash
@@ -46,8 +46,10 @@ all six seeds supports the Section 8 deletion-distance statement.
    python scripts/verify_hashes.py --check
    ```
 
-8. Commit, create Git tag and GitHub release `v1.0.1`, download its ZIP, and
+8. Commit, create Git tag and GitHub release `v1.1.0`, download its ZIP, and
    repeat steps 2--3 on that ZIP.
 9. Publish the GitHub release through the existing Zenodo integration as a
    new version of concept DOI `10.5281/zenodo.21997173`.  Record the new
-   version-specific DOI in the manuscript's data-availability statement.
+   version-specific DOI in the manuscript's data-availability statement and
+   reproducibility section (two `<v1.1.0-DOI>` placeholder footnotes), in
+   `cover_letter.txt`, and in `CITATION.cff`, then rebuild both PDFs.
