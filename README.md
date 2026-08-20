@@ -137,8 +137,8 @@ N = 75.
 - Paper: *Cycle structure and the Hamming geometry of no-three-in-line
   solutions* (in preparation; see `CITATION.cff`).
 - Archive (all versions): https://doi.org/10.5281/zenodo.21997173. Version
-  1.0.0 is record 21997174; release 1.1.0 should be deposited only after the
-  checks in `RELEASE_CHECKLIST.md` pass.
+  1.0.0 is record 21997174; version 1.1.0 is record 22023091
+  (https://doi.org/10.5281/zenodo.22023091).
 
 ## Licence
 
